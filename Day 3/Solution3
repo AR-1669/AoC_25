@@ -1,0 +1,54 @@
+input = readlines("Input3.txt")
+
+function max_char(x)
+    max = parse(Int64, x[1])
+    st = 1
+    for i in eachindex(x)
+        if parse(Int64, x[i]) > max
+            max = parse(Int64, x[i])
+            st = i
+        end        
+    end
+    return st    
+end
+
+function max_joltage(x)
+    st_idx = max_char(x[1:end - 1])
+    sc_idx = max_char(x[(st_idx + 1):end]) + st_idx
+    return parse(Int64, x[st_idx] * x[sc_idx])    
+end    
+
+function total_joltage(x)
+    res = 0
+    for i in x
+        res += max_joltage(i)
+    end
+    return res    
+end    
+
+total_joltage(input)
+
+# Part 1 answer: 17193
+
+function max_joltage2(x)
+    idx = max_char(x[1:end - 11])
+    arr = [x[idx]]
+    for i in 1:11
+        idx = max_char(x[idx + 1:end - (11 - i)]) + idx
+        push!(arr, x[idx])
+    end
+    s = join(arr)
+    return parse(Int64, s)    
+end    
+
+function total_joltage2(x)
+    res = 0
+    for i in x
+        res += max_joltage2(i)
+    end
+    return res    
+end    
+
+total_joltage2(input)
+
+# Part 2 answer: 171297349921310
