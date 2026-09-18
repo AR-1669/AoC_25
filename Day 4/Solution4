@@ -1,0 +1,186 @@
+input = readlines("input4.txt")
+
+input_mat_ch = [input[i][j] for i in 1:length(input), j in 1:length(input[1])]
+
+input_mat = [char == '@' ? 1 : 0 for char in input_mat_ch]
+
+br = 0
+
+for i in 2:137
+    for j in 2:137
+        x = input_mat[i+1, j] + input_mat[i-1, j] + input_mat[i, j+1] + input_mat[i, j-1] + input_mat[i+1, j+1] + input_mat[i-1, j-1] + input_mat[i+1, j-1] + input_mat[i-1, j+1]
+        if input_mat[i, j] == 1 && x < 4
+            br += 1
+        end
+    end
+end            
+
+for i in 1:138
+    if i == 1
+        if input_mat[1, i] == 1
+            x = input_mat[2, 1] + input_mat[1, 2] + input_mat[2, 2]
+            if x < 4
+                br += 1
+            end
+        end
+        if input_mat[138, i] == 1
+            x = input_mat[138, 2] + input_mat[137, 2] + input_mat[137, 1]
+            if x < 4
+                br += 1
+            end
+        end        
+    elseif i == 138
+        if input_mat[1, i] == 1
+            x = input_mat[1, 137] + input_mat[2, 138] + input_mat[2, 137]
+            if x < 4
+                br += 1
+            end
+        end    
+        if input_mat[138, i] == 1
+            x = input_mat[138, 137] + input_mat[137, 137] + input_mat[137, 138]
+            if x < 4
+                br += 1
+            end
+        end        
+    else
+        if input_mat[1, i] == 1
+            x = input_mat[1, i+1] + input_mat[1, i-1] + input_mat[2, i] + input_mat[2, i-1] + input_mat[2, i+1]
+            if x < 4
+                br += 1
+            end
+        end     
+        if input_mat[138, i] == 1
+            x = input_mat[138, i+1] + input_mat[138, i-1] + input_mat[137, i] + input_mat[137, i-1] + input_mat[137, i+1]
+            if x < 4
+                br += 1
+            end
+        end     
+    end
+end
+
+for i in 2:137
+    if input_mat[i, 1] == 1
+        x = input_mat[i, 2] + input_mat[i-1, 1] + input_mat[i-1, 2] + input_mat[i+1, 1] + input_mat[i+1, 2]
+        if x < 4
+            br += 1
+        end
+    end
+    if input_mat[i, 138] == 1
+        x = input_mat[i, 137] + input_mat[i-1, 137] + input_mat[i-1, 138] + input_mat[i+1, 137] + input_mat[i+1, 138]
+        if x < 4
+            br += 1
+        end
+    end     
+end     
+
+br
+
+# Part 1 answer: 1356
+
+function rolls(input_mat)
+
+arr = []
+br = 0
+
+for i in 2:137
+    for j in 2:137
+        x = input_mat[i+1, j] + input_mat[i-1, j] + input_mat[i, j+1] + input_mat[i, j-1] + input_mat[i+1, j+1] + input_mat[i-1, j-1] + input_mat[i+1, j-1] + input_mat[i-1, j+1]
+        if input_mat[i, j] == 1 && x < 4
+            br += 1
+            push!(arr, (i, j))
+        end
+    end
+end            
+
+for i in 1:138
+    if i == 1
+        if input_mat[1, i] == 1
+            x = input_mat[2, 1] + input_mat[1, 2] + input_mat[2, 2]
+            if x < 4
+                br += 1
+                push!(arr, (1, i))
+            end
+        end
+        if input_mat[138, i] == 1
+            x = input_mat[138, 2] + input_mat[137, 2] + input_mat[137, 1]
+            if x < 4
+                br += 1
+                push!(arr, (138, i))
+            end
+        end        
+    elseif i == 138
+        if input_mat[1, i] == 1
+            x = input_mat[1, 137] + input_mat[2, 138] + input_mat[2, 137]
+            if x < 4
+                br += 1
+                push!(arr, (1, i))
+            end
+        end    
+        if input_mat[138, i] == 1
+            x = input_mat[138, 137] + input_mat[137, 137] + input_mat[137, 138]
+            if x < 4
+                br += 1
+                push!(arr, (138, i))
+            end
+        end        
+    else
+        if input_mat[1, i] == 1
+            x = input_mat[1, i+1] + input_mat[1, i-1] + input_mat[2, i] + input_mat[2, i-1] + input_mat[2, i+1]
+            if x < 4
+                br += 1
+                push!(arr, (1, i))
+            end
+        end     
+        if input_mat[138, i] == 1
+            x = input_mat[138, i+1] + input_mat[138, i-1] + input_mat[137, i] + input_mat[137, i-1] + input_mat[137, i+1]
+            if x < 4
+                br += 1
+                push!(arr, (138, i))
+            end
+        end     
+    end
+end
+
+for i in 2:137
+    if input_mat[i, 1] == 1
+        x = input_mat[i, 2] + input_mat[i-1, 1] + input_mat[i-1, 2] + input_mat[i+1, 1] + input_mat[i+1, 2]
+        if x < 4
+            br += 1
+            push!(arr, (i, 1))
+        end
+    end
+    if input_mat[i, 138] == 1
+        x = input_mat[i, 137] + input_mat[i-1, 137] + input_mat[i-1, 138] + input_mat[i+1, 137] + input_mat[i+1, 138]
+        if x < 4
+            br += 1
+            push!(arr, (i, 138))
+        end
+    end     
+end     
+
+return [br, arr]
+
+end    
+
+tup = [(1, 2), (4, 1), (8, 0)]    
+tup[1][1]
+
+function remove_rolls(A)
+
+    for i in rolls(A)[2]
+        A[i[1], i[2]] = 0
+    end    
+
+
+end    
+
+br2 = 0
+
+while rolls(input_mat)[1] > 0
+    br2 += rolls(input_mat)[1]
+    remove_rolls(input_mat)
+end
+
+br2
+
+# Part 2 answer: 8713
